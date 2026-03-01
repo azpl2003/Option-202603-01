@@ -63,15 +63,37 @@
 
     <script type="module">
 
-// Initialize Firebase
+// --- 這裡請替換成你在 Firebase 官網看到的內容 ---
 const firebaseConfig = {
-  apiKey: "AIzaSyC0sRR_pt8q1__plAXPdW_zQBvpjdQFHYU",
+  apiKey: "AIzaSy...", // 這裡是一長串代碼
   authDomain: "option-202603.firebaseapp.com",
   projectId: "option-202603",
-  storageBucket: "option-202603.firebasestorage.app",
+  storageBucket: "option-202603.appspot.com",
   messagingSenderId: "888897529337",
-  appId: "1:888897529337:web:c4d503538881b558860928",
-  measurementId: "G-9C2TV401ST"
+  appId: "1:888897529337:web:..." 
+};
+
+// 初始化連線
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+// 綁定「新增」按鈕的功能
+window.addTrade = async (strategy) => {
+    try {
+        await addDoc(collection(db, "trades"), {
+            symbol: "TSLA",
+            strategy: strategy,
+            date: new Date().toISOString(),
+            status: "OPEN"
+        });
+        alert("成功新增一筆 " + strategy + " 交易！");
+    } catch (e) {
+        console.error("錯誤: ", e);
+        alert("新增失敗，請檢查資料庫權限。");
+    }
 };
 
 const analytics = getAnalytics(app);
@@ -85,3 +107,4 @@ const analytics = getAnalytics(app);
 </body>
 
 </html>
+
